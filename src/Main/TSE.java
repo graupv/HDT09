@@ -1,9 +1,8 @@
 package Main;/**/
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class TSE {
 
@@ -12,6 +11,7 @@ public class TSE {
 
     public static void main(String[] args) throws IOException {
         HashMap<String, Grafo> mis_grafos = new HashMap<String, Grafo>();
+
         StringTokenizer token = new StringTokenizer(getDataFile(), DELIMITADOR);
         String ciudadA;
         String ciudadB;
@@ -38,17 +38,87 @@ public class TSE {
             } else {
                 System.out.println(ciudadA + " si existe.");
                 Grafo placeholder = mis_grafos.remove(ciudadA);
-                placeholder.replacePath(ciudadB, distancia);
+                placeholder.addPath(ciudadB, distancia);
                 mis_grafos.put(placeholder.getNombre(), placeholder);
             }
 
+        }
+
+        System.out.println("grafos procesados, calculando matriz");
+        int [][] matrix = createMatrix(mis_grafos);
+        //  matriz vacia con 0's en diagonal
+
+        Set s = mis_grafos.keySet();
+        Object[] s2 = s.toArray();
+        ArrayList<String> notVisited = new ArrayList<String>();
+        for (int i = 0; i <s2.length; i++) {
+            notVisited.add((String)s2[i]);
 
         }
-        System.out.println(mis_grafos.size());
-        Set s = mis_grafos.keySet();
-        for (Object nombre: s) {
-            System.out.println(mis_grafos.get(nombre));
+        //  Lista de ciudades sin visitar
+
+        ArrayList<String> visited = new ArrayList<String>();
+        //  Lista de ciudades ya visitadas
+        Grafo G = mis_grafos.get(notVisited.get(0));
+        //   tomar un grafo incial
+
+//        depthFirst(G ,visited, matrix, s2);
+
+
+
+//        System.out.println(s[3]);
+
+//        for (Object nombre: s) {
+//            System.out.println(mis_grafos.get(nombre));
+//        }
+    }
+
+    private static void depthFirst(Grafo G, ArrayList<String> visits, int[][] matrix, Object[] s2){
+        while (visits.size() != matrix.length){
+            /*
+            DFS(Grafo G):
+                G <- Grafo
+
+            If Grafo not in visited:
+                add_to_visited
+                add_destinations_to_ToVisit
+                DFS (Next in ToVisit Queue)
+            Else
+                Visit Next in ToVisit Queue
+            * */
         }
+        HashMap<String, Integer> destinos = G.getDestinos();
+
+    }
+
+    private static int[][] createMatrix(HashMap<String, Grafo> H){
+        // post generacion de grafos
+        int n = H.size();
+        Set s = H.keySet();
+        int pos = 0;
+        ArrayList<String> visits = new ArrayList<String>(n);
+        Object[] s2 = s.toArray();
+        int[][] matrix = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            matrix[i][i] = 0;
+            //  diagonal de matriz == 0's
+        }
+
+//        for (Object nombre: s) {
+//            Grafo G = H.get(nombre);
+//            depthFirst(G, visits, matrix, s2);
+//            if (!visits.contains(nombre)){
+//                for (int i = 0; i <n ; i++) {
+//                    if (s2[i].equals(nombre)){
+//                        pos = i;
+//                        break;
+//                    }
+//                }
+//
+//            }
+//
+//        }
+        return matrix;
     }
 
     private static String getDataFile() throws IOException, FileNotFoundException {
@@ -64,7 +134,7 @@ public class TSE {
 
                 while((linea = reader.readLine()) != null){
 
-                    datos += linea + "\t";
+                    datos += linea.toLowerCase() + "\t";
                 }
 
                 reader.close();

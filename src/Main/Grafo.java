@@ -25,6 +25,9 @@ public class Grafo {
     public String getNombre(){
         return this.nombre;
     }
+    public HashMap<String, Integer> getDestinos(){
+        return this.destinos;
+    }
 
     public boolean isConnected(String s){
         return destinos.containsKey(s);
@@ -37,6 +40,14 @@ public class Grafo {
 
     public void replacePath(String s, int d){
 
+    }
+
+    public void visit(){
+        this.visited = true;
+    }
+
+    public boolean isVisited(){
+        return this.visited;
     }
 
     public String toString(){
