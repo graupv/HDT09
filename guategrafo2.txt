@@ -1,0 +1,16 @@
+ciudadA ciudadB 43
+ciudadK ciudadC 23
+ciudadJ ciudadD 12
+ciudadC ciudadF 66
+ciudadB ciudadD 74
+ciudadA ciudadR 43
+ciudadL ciudadC 23
+ciudadJ ciudadD 12
+ciudadC ciudadF 24
+ciudadB ciudadD 18
+ciudadD ciudadF 17
+ciudadF ciudadC 23
+ciudadJ ciudadD 16
+ciudadB ciudadF 74
+ciudadX ciudadZ 33
+
