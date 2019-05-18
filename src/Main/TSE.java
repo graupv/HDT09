@@ -1,7 +1,15 @@
-package Main;/**/
+/*
+
+HDT09   -   Grafos & DFS
+
+Gerardo Pineda
+18848
+
+*/
+
+package Main;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class TSE {
@@ -13,6 +21,8 @@ public class TSE {
         HashMap<String, Grafo> mis_grafos = new HashMap<String, Grafo>();
 
         StringTokenizer token = new StringTokenizer(getDataFile(), DELIMITADOR);
+        Stack<String> visits;
+        ArrayList<String> order = new ArrayList<String>();
         String ciudadA;
         String ciudadB;
 //        Grafo placeholder;
@@ -62,7 +72,7 @@ public class TSE {
         Grafo G = mis_grafos.get(notVisited.get(0));
         //   tomar un grafo incial
 
-//        depthFirst(G ,visited, matrix, s2);
+        depthFirst(G, visited, matrix, notVisited, mis_grafos);
 
 
 
@@ -73,8 +83,8 @@ public class TSE {
 //        }
     }
 
-    private static void depthFirst(Grafo G, ArrayList<String> visits, int[][] matrix, Object[] s2){
-        while (visits.size() != matrix.length){
+    private static void depthFirst(Grafo G, ArrayList<String> visits, int[][] matrix, ArrayList<String> notVisited, HashMap<String, Grafo> mis_grafos){
+        while (notVisited.size() > 0){
             /*
             DFS(Grafo G):
                 G <- Grafo
@@ -85,9 +95,12 @@ public class TSE {
                 DFS (Next in ToVisit Queue)
             Else
                 Visit Next in ToVisit Queue
+                HashMap<String, Integer> destinos = G.getDestinos();
             * */
+            depthFirst(G, visits, matrix, notVisited, mis_grafos);
+
         }
-        HashMap<String, Integer> destinos = G.getDestinos();
+        return;
 
     }
 
