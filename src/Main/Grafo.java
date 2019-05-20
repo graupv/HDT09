@@ -1,59 +1,17 @@
 package Main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.PriorityQueue;
 
-public class Grafo {
-    Boolean visited = false;
-    String nombre;
+public class Grafo<V, E> {
+    PriorityQueue<Vertice> search_queue = new PriorityQueue<Vertice>();
+    ArrayList<Vertice> vertices = new ArrayList<Vertice>();
+//    HashMap<String, Integer> arcos = new HashMap<String, Integer>();
+    //
 
-    HashMap<String, Integer> destinos = new HashMap<String, Integer>();
-
-    Grafo(String nom){
-        this.nombre = nom;
-    }
-
-    public void addPath(String g, int n){
-        if (destinos.containsKey(g)){
-            destinos.replace(g, n);
-        } else {
-            destinos.put(g, n);
-        }
-    }
-
-    public String getNombre(){
-        return this.nombre;
-    }
-    public HashMap<String, Integer> getDestinos(){
-        return this.destinos;
-    }
-
-    public boolean isConnected(String s){
-        return destinos.containsKey(s);
-
-    }
-
-    public int getDistnace(String s){
-        return destinos.get(s);
-    }
-
-    public void replacePath(String s, int d){
-
-    }
-
-    public void visit(){
-        this.visited = true;
-    }
-
-    public boolean isVisited(){
-        return this.visited;
-    }
-
-    public String toString(){
-        return this.nombre + "\n mis destinos:\n" +
-                destinos.toString();
-
+    public void addVert(Vertice v){
+        vertices.add(v);
     }
 
 }

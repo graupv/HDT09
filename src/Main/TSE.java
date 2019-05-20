@@ -18,15 +18,20 @@ public class TSE {
     final static String file_path = "guategrafo.txt";
 
     public static void main(String[] args) throws IOException {
-        HashMap<String, Grafo> mis_grafos = new HashMap<String, Grafo>();
+        HashMap<String, Vertice> mis_vertices = new HashMap<String, Vertice>();
+
 
         StringTokenizer token = new StringTokenizer(getDataFile(), DELIMITADOR);
-        Stack<String> visits;
+        Stack<String> visits = new Stack<>();
         ArrayList<String> order = new ArrayList<String>();
         String ciudadA;
         String ciudadB;
-//        Grafo placeholder;
+
+        Grafo graph = new Grafo();
+//        graph.addVert();
+//        Vertice placeholder;
         Integer distancia = 0;
+        int nums = 1;
 
 //        System.out.println(System.getProperty("user.dir"));
 //        getcwd()
@@ -37,65 +42,100 @@ public class TSE {
 
             distancia = Integer.valueOf(token.nextToken());
 
-            if (!mis_grafos.containsKey(ciudadA)){
-                System.out.println("got city: " + ciudadA);
-                System.out.println("got city: " + ciudadB);
-                System.out.println("got distance: " + distancia);
-                System.out.println(ciudadA + " no existe.");
-                Grafo placeholder = new Grafo(ciudadA);
+            if (!mis_vertices.containsKey(ciudadA)){
+//                System.out.println("got city: " + ciudadA);
+//                System.out.println("got city: " + ciudadB);
+//                System.out.println("got distance: " + distancia);
+//                System.out.println(ciudadA + " no existe.");
+                Vertice placeholder = new Vertice(ciudadA, nums);
+                nums++;
                 placeholder.addPath(ciudadB, distancia);
-                mis_grafos.put(ciudadA, placeholder);
+                mis_vertices.put(ciudadA, placeholder);
             } else {
-                System.out.println(ciudadA + " si existe.");
-                Grafo placeholder = mis_grafos.remove(ciudadA);
+//                System.out.println(ciudadA + " si existe.");
+                Vertice placeholder = mis_vertices.get(ciudadA);
                 placeholder.addPath(ciudadB, distancia);
-                mis_grafos.put(placeholder.getNombre(), placeholder);
+                mis_vertices.put(placeholder.getNombre(), placeholder);
             }
 
         }
 
         System.out.println("grafos procesados, calculando matriz");
-        int [][] matrix = createMatrix(mis_grafos);
+        int [][] matrix = createMatrix(mis_vertices);
         //  matriz vacia con 0's en diagonal
 
-        Set s = mis_grafos.keySet();
-        Object[] s2 = s.toArray();
+        Set s = mis_vertices.keySet();
+        Object[] s2 = s.toArray();  // lista de todos los nombres de vertices
+        Object[] s3;
         ArrayList<String> notVisited = new ArrayList<String>();
-        for (int i = 0; i <s2.length; i++) {
-            notVisited.add((String)s2[i]);
 
-        }
+
         //  Lista de ciudades sin visitar
 
-        ArrayList<String> visited = new ArrayList<String>();
+//        ArrayList<String> visited = new ArrayList<String>();
         //  Lista de ciudades ya visitadas
-        Grafo G = mis_grafos.get(notVisited.get(0));
+//        Vertice G = mis_grafos.get(notVisited.get(0));
         //   tomar un grafo incial
 
-        depthFirst(G, visited, matrix, notVisited, mis_grafos);
+//        depthFirst(G, visited, matrix, notVisited, mis_grafos);
 
 
 
 //        System.out.println(s[3]);
 
-//        for (Object nombre: s) {
-//            System.out.println(mis_grafos.get(nombre));
-//        }
+        for (Object nombre: s) {
+            System.out.println(mis_vertices.get(nombre));
+        }
+
+        System.out.println("prints done\n");
+        for (int i = 0; i < s2.length - 1; i++) {
+            notVisited.add((String)s2[i]);
+            System.out.println("unvis");
+            //  popular no visitados
+
+            Vertice placeholder = mis_vertices.get((String)s2[i]);
+            HashMap<String, Integer> eds = placeholder.getEdges();
+            Set ed = eds.keySet();
+            s3 = ed.toArray();
+            String nom;
+            int x = placeholder.getNum();
+            int y;
+            for (int j = 0; j < s3.length - 1 ; j++) {
+                nom = (String)s3[j];
+                y = mis_vertices.get(nom).getNum();
+                System.out.println("edge: " + eds.get(nom));
+                matrix[x][y] = eds.get(nom);
+            }
+
+
+        }
+        System.out.println("not visited: " + notVisited.size());
+
+        for (int i = 0; i < matrix.length - 1; i++) {
+
+            for (int j = 0; j < matrix.length - 1; j++) {
+                System.out.print(matrix[i][j] + "\t\t");
+
+            }
+            System.out.print("\n");
+
+        }
+
     }
 
-    private static void depthFirst(Grafo G, ArrayList<String> visits, int[][] matrix, ArrayList<String> notVisited, HashMap<String, Grafo> mis_grafos){
+    private static void depthFirst(Vertice G, ArrayList<String> visits, int[][] matrix, ArrayList<String> notVisited, HashMap<String, Vertice> mis_grafos){
         while (notVisited.size() > 0){
             /*
-            DFS(Grafo G):
-                G <- Grafo
+            DFS(Vertice G):
+                G <- Vertice
 
-            If Grafo not in visited:
+            If Vertice not in visited:
                 add_to_visited
                 add_destinations_to_ToVisit
                 DFS (Next in ToVisit Queue)
             Else
                 Visit Next in ToVisit Queue
-                HashMap<String, Integer> destinos = G.getDestinos();
+                HashMap<String, Integer> edges = G.getEdges();
             * */
             depthFirst(G, visits, matrix, notVisited, mis_grafos);
 
@@ -104,7 +144,7 @@ public class TSE {
 
     }
 
-    private static int[][] createMatrix(HashMap<String, Grafo> H){
+    private static int[][] createMatrix(HashMap<String, Vertice> H){
         // post generacion de grafos
         int n = H.size();
         Set s = H.keySet();
@@ -117,8 +157,9 @@ public class TSE {
             //  diagonal de matriz == 0's
         }
 
+
 //        for (Object nombre: s) {
-//            Grafo G = H.get(nombre);
+//            Vertice G = H.get(nombre);
 //            depthFirst(G, visits, matrix, s2);
 //            if (!visits.contains(nombre)){
 //                for (int i = 0; i <n ; i++) {
