@@ -31,7 +31,7 @@ public class TSE {
 //        graph.addVert();
 //        Vertice placeholder;
         Integer distancia = 0;
-        int nums = 1;
+        int nums = 0;
 
 //        System.out.println(System.getProperty("user.dir"));
 //        getcwd()
@@ -53,7 +53,7 @@ public class TSE {
                 mis_vertices.put(ciudadA, placeholder);
             } else {
 //                System.out.println(ciudadA + " si existe.");
-                Vertice placeholder = mis_vertices.get(ciudadA);
+                Vertice placeholder = mis_vertices.remove(ciudadA);
                 placeholder.addPath(ciudadB, distancia);
                 mis_vertices.put(placeholder.getNombre(), placeholder);
             }
@@ -67,23 +67,16 @@ public class TSE {
         Set s = mis_vertices.keySet();
         Object[] s2 = s.toArray();  // lista de todos los nombres de vertices
         Object[] s3;
-        ArrayList<String> notVisited = new ArrayList<String>();
-
-
-        //  Lista de ciudades sin visitar
-
-//        ArrayList<String> visited = new ArrayList<String>();
-        //  Lista de ciudades ya visitadas
-//        Vertice G = mis_grafos.get(notVisited.get(0));
-        //   tomar un grafo incial
-
-//        depthFirst(G, visited, matrix, notVisited, mis_grafos);
+        ArrayList<String> notVisited = new ArrayList<String>(s.size());
 
 
 
 //        System.out.println(s[3]);
-
+        System.out.println("son: " + s2.length);
         for (Object nombre: s) {
+            System.out.println(nombre);
+            
+            notVisited.add((String)nombre);
             System.out.println(mis_vertices.get(nombre));
         }
 
@@ -100,12 +93,12 @@ public class TSE {
             String nom;
             int x = placeholder.getNum();
             int y;
-            for (int j = 0; j < s3.length - 1 ; j++) {
-                nom = (String)s3[j];
-                y = mis_vertices.get(nom).getNum();
-                System.out.println("edge: " + eds.get(nom));
-                matrix[x][y] = eds.get(nom);
+            for (Object edge: ed) {
+                System.out.println(edge);
+                y = mis_vertices.get(edge).getNum();
+                matrix[x][y] = eds.get(edge);
             }
+
 
 
         }
